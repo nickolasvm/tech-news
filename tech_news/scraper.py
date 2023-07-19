@@ -1,7 +1,19 @@
-# Requisito 1
-def fetch(url):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+import requests
+import time
+
+HEADER = {"user-agent": "Fake user-agent"}
+
+
+def fetch(url: str):
+    time.sleep(1)
+
+    try:
+        response = requests.get(url, headers=HEADER, timeout=2)
+        if response.status_code == 200:
+            return response.text
+
+    except requests.ReadTimeout:
+        return None
 
 
 # Requisito 2
