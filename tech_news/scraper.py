@@ -28,10 +28,15 @@ def scrape_updates(html_content: str) -> list[str]:
     return links
 
 
-# Requisito 3
-def scrape_next_page_link(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+def scrape_next_page_link(html_content: str) -> str:
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    next_link = soup.find("a", {"class": "next"})
+
+    if next_link:
+        return next_link["href"]
+    else:
+        return None
 
 
 # Requisito 4
