@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import re
+from tech_news.database import create_news
 
 HEADER = {"user-agent": "Fake user-agent"}
 
@@ -76,7 +77,20 @@ def scrape_news(html_content: str) -> dict:
     }
 
 
-# Requisito 5
-def get_tech_news(amount):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+def get_tech_news(amount: int) -> list[dict]:
+    html = fetch("https://blog.betrybe.com/")
+
+    news = []
+
+    news_links = scrape_updates(html)
+
+    while amount > len(news_links):
+        html = fetch(scrape_next_page_link(html))
+        news_links.extend(scrape_updates(html))
+
+    for i in range(amount):
+        news.append(scrape_news(fetch(news_links[i])))
+
+    create_news(news)
+
+    return news
