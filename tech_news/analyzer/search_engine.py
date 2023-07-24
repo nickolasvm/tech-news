@@ -36,7 +36,11 @@ def search_by_date(date: str) -> list[tuple]:
         raise ValueError("Data inválida")
 
 
-# Requisito 9
-def search_by_category(category):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+def search_by_category(category: str) -> list[tuple]:
+    pattern = re.compile(r"\b" + re.escape(category) + r"\b", re.IGNORECASE)
+
+    result = []
+    for el in search_news({"category": {"$regex": pattern}}):
+        result.append((el["title"], el["url"]))
+
+    return result
